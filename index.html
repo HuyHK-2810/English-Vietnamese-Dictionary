@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dictionary</title>
+</head>
+<body>
+    <h1>Tra từ điển</h1>
+    <input type="text" id="searchWord" placeholder="Nhập từ cần tra">
+    <button onclick="searchDictionary()">Tra</button>
+    <div id="result"></div>
+
+    <script>
+        function searchDictionary() {
+            var word = document.getElementById("searchWord").value;
+            fetch('/dictionary/' + word)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        document.getElementById("result").innerText = data.error;
+                    } else {
+                        document.getElementById("result").innerText = JSON.stringify(data);
+                    }
+                });
+        }
+    </script>
+</body>
+</html>
