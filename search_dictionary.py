@@ -1,21 +1,21 @@
-import json
+from flask import Flask, jsonify
 
-# Đọc dữ liệu từ tệp JSON
-with open('dictionary.json', 'r') as file:
-    data = json.load(file)
+app = Flask(__name__)
 
-# Hàm tra từ điển
+@app.route('/dictionary/<word>')
 def search_dictionary(word):
+    # Đọc dữ liệu từ tệp JSON
+    with open('dictionary.json', 'r') as file:
+        data = json.load(file)
+    
+    # Tìm kiếm từ trong từ điển
     found_word = next((entry for entry in data['words'] if entry['word'] == word), None)
+    
+    # Trả về kết quả dưới dạng JSON
     if found_word:
-        print('Từ:', found_word['word'])
-        print('Phát âm:', found_word['pronunciation'])
-        print('Định nghĩa:')
-        for index, definition in enumerate(found_word['definitions'], start=1):
-            print(f"{index}. Loại: {definition['type']}, Nghĩa: {definition['meaning']}")
+        return jsonify(found_word)
     else:
-        print(f'Từ "{word}" không được tìm thấy trong từ điển.')
+        return jsonify({'error': 'Từ không được tìm thấy trong từ điển.'})
 
-# Sử dụng hàm tra từ điển
-search_word = input("Nhập từ cần tra: ")  # Nhập từ cần tra từ người dùng
-search_dictionary(search_word)
+if __name__ == '__main__':
+    app.run(debug=True)
