@@ -1,0 +1,24 @@
+{
+  "words": [
+    {
+      "word": "apple",
+      "pronunciation": "/ˈæp.əl/",
+      "definitions": [
+        {
+          "type": "noun",
+          "meaning": "a round fruit with red or green skin and a whitish inside part"
+        }
+      ]
+    },
+    {
+      "word": "banana",
+      "pronunciation": "/bəˈnæn.ə/",
+      "definitions": [
+        {
+          "type": "noun",
+          "meaning": "a long, curved fruit with a thick skin and soft, sweet flesh"
+        }
+      ]
+    }
+  ]
+}
