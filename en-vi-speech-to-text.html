@@ -30,7 +30,7 @@
         flex-direction: column;
         justify-content: start;
         align-items: center;
-        width: 100vw;
+        width: 90vw;
       }
       #input-search {
         display: flex;
@@ -45,7 +45,6 @@
       }
       body {
         font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
         margin: 0;
         padding: 0;
         display: flex;
@@ -53,6 +52,8 @@
         justify-content: start;
         align-items: center;
         height: 100vh;
+        background-color: white;
+
       }
 
       .container {
@@ -92,8 +93,18 @@
 
       #result {
         margin-top: 20px;
-        text-align: center;
-        width: 100%;
+        text-align: left;
+        width: 80%;
+        overflow: auto;
+        padding: 10px;
+        max-height: 50vh;
+      }
+
+      .definition {
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        padding: 10px;
+        border-radius: 4px;
       }
       /* Responsive CSS */
       @media only screen and (max-width: 768px) {
@@ -114,7 +125,7 @@
   </head>
   <body>
     <div id="banner">
-      <div id="abc">Abc</div>
+      <div id="abc">TRƯỜNG PT DTNT TỈNH BẠC LIÊU</div>
     </div>
 
     <div id="body-content">
