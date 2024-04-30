@@ -40,7 +40,7 @@
         gap: 8px;
         width: 100%;
       }
-      #searchWord{
+      #searchWord {
         max-width: 200px;
       }
       body {
@@ -94,7 +94,6 @@
         margin-top: 20px;
         text-align: center;
         width: 100%;
-
       }
       /* Responsive CSS */
       @media only screen and (max-width: 768px) {
@@ -142,44 +141,47 @@
 
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <script>
-      function searchDictionary(keyword) {
-        var word = keyword || document.getElementById("searchWord").value;
-        // Tạo yêu cầu AJAX để truy cập dữ liệu từ điển từ tệp JSON
+      function searchDictionary() {
+        var word = document.getElementById("searchWord").value;
         var xhr = new XMLHttpRequest();
         xhr.open(
           "GET",
-          "./dictionary.json",
+          "https://huyhk-2810.github.io/English-Vietnamese-Dictionary/dictionary.json",
           true
         );
         xhr.onreadystatechange = function () {
           if (xhr.readyState == 4 && xhr.status == 200) {
             var data = JSON.parse(xhr.responseText);
-            if (data.words && Array.isArray(data.words)) {
-              var foundWord = data.words.find(function (entry) {
-                return entry.word.toLowerCase() === word.toLowerCase();
-              });
-              if (foundWord) {
-                var resultHtml = "<p>Từ: " + foundWord.word + "</p>";
-                resultHtml += "<p>Phát âm: " + foundWord.pronunciation + "</p>";
-                resultHtml += "<h3>Định nghĩa:</h3>";
-                foundWord.definitions.forEach(function (definition, index) {
+            var foundWord = data.find(function (entry) {
+              return entry.word.toLowerCase() === word.toLowerCase();
+            });
+            if (foundWord) {
+              var resultHtml = "<h2>Từ: " + foundWord.word + "</h2>";
+              resultHtml += "<p>Phát âm: " + foundWord.pronunciation + "</p>";
+              resultHtml += "<h3>Định nghĩa:</h3>";
+              foundWord.definitions.forEach(function (definition) {
+                resultHtml += "<div class='definition'>";
+                if (definition.types) {
+                  definition.types.forEach(function (type) {
+                    resultHtml += "<p><strong>Loại:</strong> " + type + "</p>";
+                  });
+                }
+                if (definition.meaning) {
                   resultHtml +=
-                    "<p>" +
-                    (index + 1) +
-                    ". Loại: " +
-                    definition.type +
-                    ", Nghĩa: " +
-                    definition.meaning +
-                    "</p>";
-                });
-                document.getElementById("result").innerHTML = resultHtml;
-              } else {
-                document.getElementById("result").innerText =
-                  "Từ '" + word + "' không được tìm thấy trong từ điển.";
-              }
+                    "<p><strong>Nghĩa:</strong> " + definition.meaning + "</p>";
+                }
+                if (definition.examples) {
+                  resultHtml += "<p><strong>Ví dụ:</strong></p>";
+                  definition.examples.forEach(function (example) {
+                    resultHtml += "<p>" + example + "</p>";
+                  });
+                }
+                resultHtml += "</div>";
+              });
+              document.getElementById("result").innerHTML = resultHtml;
             } else {
               document.getElementById("result").innerText =
-                "Dữ liệu từ điển không hợp lệ.";
+                "Từ '" + word + "' không được tìm thấy trong từ điển.";
             }
           }
         };
