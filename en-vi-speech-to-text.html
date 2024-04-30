@@ -10,9 +10,9 @@
         padding: 0;
       }
       #banner {
-        height: 600px;
+        height: 20vh;
         width: 100%;
-        background-image: url("path/to/your/image.jpg"); /* Thay 'path/to/your/image.jpg' bằng đường dẫn thực tế của hình ảnh bạn muốn sử dụng */
+        background-image: url("https://cce.edu.vn/wp-content/uploads/2023/09/pngtree-healthcare-science-medical-dna-background-banner-picture-image_1298121.png"); /* Thay 'path/to/your/image.jpg' bằng đường dẫn thực tế của hình ảnh bạn muốn sử dụng */
         background-size: cover;
         position: relative;
       }
@@ -26,6 +26,22 @@
       }
       #body-content {
         padding: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        align-items: center;
+        width: 100vw;
+      }
+      #input-search {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+      }
+      #searchWord{
+        max-width: 200px;
       }
       body {
         font-family: Arial, sans-serif;
@@ -33,15 +49,15 @@
         margin: 0;
         padding: 0;
         display: flex;
-        justify-content: center;
+        flex-direction: column;
+        justify-content: start;
         align-items: center;
         height: 100vh;
       }
 
       .container {
         text-align: center;
-        max-width: 600px;
-        width: 90%;
+        width: 100vw;
         background-color: #fff;
         padding: 20px;
         border-radius: 8px;
@@ -76,7 +92,9 @@
 
       #result {
         margin-top: 20px;
-        text-align: left;
+        text-align: center;
+        width: 100%;
+
       }
       /* Responsive CSS */
       @media only screen and (max-width: 768px) {
@@ -102,23 +120,21 @@
 
     <div id="body-content">
       <!-- Thêm nội dung của bạn ở đây -->
-      <div class="container">
-        <h1>Tra từ điển</h1>
-        <!-- Ô tìm kiếm -->
-        <form action="." method="get">
-          <input
-            type="text"
-            id="searchWord"
-            placeholder="Nhập từ cần tra"
-            name="eng-input"
-            class="speech-input"
-          />
-          <button onclick="searchDictionary()">Tra</button>
-        </form>
-
-        <!-- Kết quả từ điển -->
-        <div id="result"></div>
+      <h1>Tra từ điển</h1>
+      <!-- Ô tìm kiếm -->
+      <div id="input-search">
+        <input
+          type="text"
+          id="searchWord"
+          placeholder="Nhập từ cần tra"
+          name="eng-input"
+          class="speech-input"
+        />
+        <button onclick="searchDictionary()">Tra</button>
       </div>
+
+      <!-- Kết quả từ điển -->
+      <div id="result"></div>
     </div>
 
     <!-- Place this tag in your head or just before your close body tag. -->
@@ -138,27 +154,32 @@
         xhr.onreadystatechange = function () {
           if (xhr.readyState == 4 && xhr.status == 200) {
             var data = JSON.parse(xhr.responseText);
-            var foundWord = data.words.find(function (entry) {
-              return entry.word.toLowerCase() === word.toLowerCase();
-            });
-            if (foundWord) {
-              var resultHtml = "<p>Từ: " + foundWord.word + "</p>";
-              resultHtml += "<p>Phát âm: " + foundWord.pronunciation + "</p>";
-              resultHtml += "<h3>Định nghĩa:</h3>";
-              foundWord.definitions.forEach(function (definition, index) {
-                resultHtml +=
-                  "<p>" +
-                  (index + 1) +
-                  ". Loại: " +
-                  definition.type +
-                  ", Nghĩa: " +
-                  definition.meaning +
-                  "</p>";
+            if (data.words && Array.isArray(data.words)) {
+              var foundWord = data.words.find(function (entry) {
+                return entry.word.toLowerCase() === word.toLowerCase();
               });
-              document.getElementById("result").innerHTML = resultHtml;
+              if (foundWord) {
+                var resultHtml = "<p>Từ: " + foundWord.word + "</p>";
+                resultHtml += "<p>Phát âm: " + foundWord.pronunciation + "</p>";
+                resultHtml += "<h3>Định nghĩa:</h3>";
+                foundWord.definitions.forEach(function (definition, index) {
+                  resultHtml +=
+                    "<p>" +
+                    (index + 1) +
+                    ". Loại: " +
+                    definition.type +
+                    ", Nghĩa: " +
+                    definition.meaning +
+                    "</p>";
+                });
+                document.getElementById("result").innerHTML = resultHtml;
+              } else {
+                document.getElementById("result").innerText =
+                  "Từ '" + word + "' không được tìm thấy trong từ điển.";
+              }
             } else {
               document.getElementById("result").innerText =
-                "Từ '" + word + "' không được tìm thấy trong từ điển.";
+                "Dữ liệu từ điển không hợp lệ.";
             }
           }
         };
